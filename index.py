@@ -13,8 +13,8 @@ def simpleMovingAverage(df, length, value):
 #Today's Close > Yesterday's Close
 #Today's Close > Yesterday's Open
 #Today's Open > Yesterday's Close
-def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage):
-    return (todaysEquityData['Volume'] > volumeAverage) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'])
+def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage, priceAverage):
+    return (todaysEquityData['Volume'] > volumeAverage) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'] and (todaysEquityData['Close'] > priceAverage))
 
 #Profit Target = (1 + reward) * Purchase Price
 #Stop Loss = (1 - risk) * Purchase Price
@@ -44,10 +44,11 @@ def getTradeProbabilities(ticker, risk, reward):
         tomorrowsEquityData = tickerDataFrame.iloc[day + 1]     #High, Low, Open, Close, of a tomorrow
 
         volumeAverage_50 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 50, 'Volume')     #50 Day Volume Average
+        priceAverage_50 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 180, 'Close')       #180 Day SMA
 
         todaysDate = tickerDataFrame.index[day]
 
-        if(buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50)):
+        if(buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_50)):
             result = tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward)
             # print(todaysDate)
             # print(result)
