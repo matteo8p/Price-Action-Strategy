@@ -2,7 +2,7 @@
 
 import yfinance as yf
 
-tickers = ['JD', 'TSLA', 'ELY', 'NVDA', 'ZM']
+tickers = ['TDOC', 'JD', 'YY']
 
 #Return the moving average of a set
 #INPUTS: Dataframe, SMA Length, Desired Value (ex. 'Close')
@@ -12,7 +12,6 @@ def simpleMovingAverage(df, length, value):
 #Meets buying conditions
 #For this strategy, the buying condition is when the equity has high volume on a green day.
 #Volume > Volume Average
-#Today's Close > 180 Day SMA
 #Today's Close > Yesterday's Close
 #Today's Close > Yesterday's Open
 #Today's Close > Today's Open
@@ -49,11 +48,11 @@ def getTradeProbabilities(ticker, risk, reward, leverage):
         tomorrowsEquityData = tickerDataFrame.iloc[day + 1]     #High, Low, Open, Close, of a tomorrow
 
         volumeAverage_50 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 50, 'Volume')     #50 Day Volume Average
-        priceAverage_50 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 180, 'Close')       #180 Day SMA
+        priceAverage_180 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 180, 'Close')       #180 Day SMA
 
         todaysDate = tickerDataFrame.index[day]
 
-        if(buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_50)):
+        if(buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_180)):
             result = tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward)
 
             # print(todaysDate)
