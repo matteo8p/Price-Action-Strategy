@@ -1,6 +1,6 @@
 import yfinance as yf
 
-tickers = ['ELY', 'NVDA', 'JD', 'ZM', 'TSLA']
+tickers = ['ELY', 'TSLA', 'ZM', 'JD', 'NVDA']
 
 #Return the moving average of a set
 #INPUTS: Dataframe, SMA Length, Desired Value (ex. 'Close')
@@ -13,9 +13,8 @@ def simpleMovingAverage(df, length, value):
 #Today's Close > 180 Day SMA
 #Today's Close > Yesterday's Close
 #Today's Close > Yesterday's Open
-#Today's Open > Yesterday's Close
-def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage, priceAverage):
-    return (todaysEquityData['Volume'] > volumeAverage) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'] and (todaysEquityData['Close'] > priceAverage))
+def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_180):
+    return (todaysEquityData['Volume'] > volumeAverage_50) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'])
 
 #Profit Target = (1 + reward) * Purchase Price
 #Stop Loss = (1 - risk) * Purchase Price
@@ -51,8 +50,10 @@ def getTradeProbabilities(ticker, risk, reward):
 
         if(buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_50)):
             result = tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward)
+
             # print(todaysDate)
             # print(result)
+
             if(result == "Win"):
                 wins += 1
             elif(result == "Lose"):
