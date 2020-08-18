@@ -9,12 +9,13 @@ def simpleMovingAverage(df, length, value):
 
 #Meets buying conditions
 #For this strategy, the buying condition is when the equity has high volume on a green day.
-#Volume > Volume Average
+#Volume > Yesterday's Volume
+#Volume >= VolumeAvg * .9
 #Today's Close > Yesterday's Close
 #Today's Close > Yesterday's Open
 #Today's Open > Yesterday's Close
 def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage):
-    return (todaysEquityData['Volume'] > volumeAverage) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'])
+    return (todaysEquityData['Volume'] > volumeAverage * .6) and (todaysEquityData['Volume'] > yesterdaysEquityData['Volume']) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'])
 
 #Profit Target = (1 + reward) * Purchase Price
 #Stop Loss = (1 - risk) * Purchase Price
