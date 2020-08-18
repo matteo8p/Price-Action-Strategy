@@ -1,4 +1,7 @@
+#Price Action SHORT Strategy
+
 import yfinance as yf
+
 
 tickers = ['ELY', 'TSLA', 'ZM', 'JD', 'NVDA']
 
@@ -10,21 +13,20 @@ def simpleMovingAverage(df, length, value):
 #Meets buying conditions
 #For this strategy, the buying condition is when the equity has high volume on a green day.
 #Volume > Volume Average
-#Today's Close > 180 Day SMA
-#Today's Close > Yesterday's Close
-#Today's Close > Yesterday's Open
+#Today's Close < Yesterday's Close
+#Today's Close < Yesterday's Open
 def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_180):
-    return (todaysEquityData['Volume'] > volumeAverage_50) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'])
+    return (todaysEquityData['Volume'] > volumeAverage_50) and (todaysEquityData['Close'] < yesterdaysEquityData['Close']) and (todaysEquityData['Close'] < yesterdaysEquityData['Open'])
 
-#Profit Target = (1 + reward) * Purchase Price
-#Stop Loss = (1 - risk) * Purchase Price
+#Profit Target = (1 - reward) * Purchase Price
+#Stop Loss = (1 + risk) * Purchase Price
 def tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward):
     tradePrice = todaysEquityData['Close']
 
-    if(tomorrowsEquityData['Open'] > tradePrice * (1 - risk)) and (tomorrowsEquityData['High'] >= tradePrice * (1 + reward)):
+    if(tomorrowsEquityData['Open'] < tradePrice * (1 + risk)) and (tomorrowsEquityData['Low'] <= tradePrice * (1 - reward)):
         return "Win"
 
-    if(tomorrowsEquityData['Low'] <= tradePrice * (1 - risk)):
+    if(tomorrowsEquityData['High'] > tradePrice * (1 + risk)):
         return "Lose"
 
     return "Stale"
