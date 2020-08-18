@@ -10,6 +10,7 @@ def simpleMovingAverage(df, length, value):
 #Meets buying conditions
 #For this strategy, the buying condition is when the equity has high volume on a green day.
 #Volume > Volume Average
+#Today's Close > 180 Day SMA
 #Today's Close > Yesterday's Close
 #Today's Close > Yesterday's Open
 #Today's Open > Yesterday's Close
