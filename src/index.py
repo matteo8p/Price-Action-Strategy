@@ -1,6 +1,6 @@
 import PriceActionStrategy as pas
 
-ticker = 'PTON'
+ticker = 'FUTU'
 watchlist = ['AMZN', 'TSLA', 'GOOG', 'W', 'BDX', 'TDOC', 'CRM', 'ENTG', 'JD', 'PTON', 'TRMB', 'STNE', 'BJ', 'NRG', 'FUTU', 'HCAT']
 ticker_set = ['PTON', 'FUTU', 'HCAT', 'TSLA', 'TDOC']
 

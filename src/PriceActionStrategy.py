@@ -36,7 +36,7 @@ def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, p
 def tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward):
     tradePrice = todaysEquityData['Close']
 
-    if(tomorrowsEquityData['Open'] > tradePrice * (1 - risk)) and (tomorrowsEquityData['High'] >= tradePrice * (1 + reward)):
+    if(tomorrowsEquityData['Low'] > tradePrice * (1 - risk)) and (tomorrowsEquityData['High'] >= tradePrice * (1 + reward)):
         return "Win"
     elif(tomorrowsEquityData['Low'] <= tradePrice * (1 - risk)):
         return "Lose"

@@ -34,12 +34,12 @@ Essentially, if you hit your profit target, it's a win. If the price goes below 
 
 The logic is here: 
 
-    if(tomorrowsEquityData['Open'] > tradePrice * (1 - risk)) and (tomorrowsEquityData['High'] >= tradePrice * (1 + reward)):
+    if(tomorrowsEquityData['Low'] > tradePrice * (1 - risk)) and (tomorrowsEquityData['High'] >= tradePrice * (1 + reward)):
         return "Win"
     elif(tomorrowsEquityData['Low'] <= tradePrice * (1 - risk)):
         return "Lose"
 
-    return "Stale"      
+    return "Stale"  
 
 # Program Execution 
 Main method of the program is at index.py.
@@ -60,6 +60,7 @@ Decide which function you want to run
 
 Once your variables are configured, execute python 
 
+    python -m pip install yfinance (If needed)
     python src/index.py
 
 # How you should use the program 
