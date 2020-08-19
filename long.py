@@ -2,7 +2,7 @@
 
 import yfinance as yf
 
-tickers = ['TDOC', 'JD', 'YY']
+tickers = ['PCRX', 'TDOC', 'YY', 'FUTU', 'JD']
 
 #Return the moving average of a set
 #INPUTS: Dataframe, SMA Length, Desired Value (ex. 'Close')
