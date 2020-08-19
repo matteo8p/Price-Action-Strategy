@@ -4,7 +4,17 @@
 The Price Action Trading Strategy is an overnight play examining price and volume of a security on the daily charts. The idea is to buy the equity at price close, then sell it for a profit the next morning. This program optimizes this strategy by analyzing the win probability and expected outcome. Law of large numbers states that repeating this strategy a large number of times will result in approaching the true expected value derived from the simulation. 
 
 # The Strategy
-The strategy is to buy on a bullish candle supported by high volume. Aim to buy the stock right at market close (3:30 - 4:00 pm) so that prices do not flucuate too much after purchase. This should be done every day. Set a GTC_EXT order at profit target for morning next day. At 6:15 am next day, some equities may be sold by the GTC_EXT order. For those that have not been executed, set up an OCO bracket with profit target and Stop Loss. Let the stocks play out during market hours. Repeat again at end of day. 
+The strategy is to buy on a bullish candle supported by high volume. 
+
+1. Select the top stocks to buy that day 
+2. Divide your portfolio and buy the stocks at end of day (3:30 - 4:00 pm). Try to hit the 'close' price as close as possible
+3. After market closes, create GTC_EXT limit order for profit targets. 
+4. Wake up at 6:00 - 6:15 am. Some of your stocks may be executed by the GTC_EXT order 
+5. For the stocks that have not executed, create an OCO bracket with Stop Loss and Profit Target Limit Order 
+6. Let your OCO orders play out for the day. 
+7. Repeat strategy near market close. 
+
+Throughout the steps, use the program to optimize your stock choices and risk reward ratios. 
 
 The risk is ~1% 
 The profit target is range from 1% - 3%
