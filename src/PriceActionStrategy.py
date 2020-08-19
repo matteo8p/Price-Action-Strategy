@@ -107,7 +107,7 @@ def optimizeTicker(ticker, risk, reward_risk_ratios, leverage, show_full_logs):
     print('---------------------------')
     print('Average Expected Value: {}'.format(average_expected_value))
     print('Optimal Take Profit %: {}%'.format(optimal_profit_target * 100))
-    print('Expected Value at {}% Take Profit: {}'.format(optimal_profit_target, max_expected_value))
+    print('Expected Value at {}% Take Profit: {}'.format(optimal_profit_target * 100, max_expected_value))
     print('Est. Annual Return at Optimal Take Profit: {}'.format(max_expected_value ** 260))
     print('')
 
