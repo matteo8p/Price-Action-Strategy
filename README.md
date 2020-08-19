@@ -60,7 +60,7 @@ Decide which function you want to run
 
 Once your variables are configured, execute python 
 
-    python index.py
+    python src/index.py
 
 # How you should use the program 
 1. Build your watchlist of stocks that appear to meet the criteria and look good
