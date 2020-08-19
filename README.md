@@ -12,12 +12,12 @@ The profit target is range from 1% - 3%
 ## Buy Conditions
 Buy on a bullish candle supported by high volume 
 
-Volume > Volume Average(50)
-Today's Close > Yesterday's Close
-Today's Close > Yesterday's Open
-Today's Close > Today's Open
+    Volume > Volume Average(50)
+    Today's Close > Yesterday's Close
+    Today's Close > Yesterday's Open
+    Today's Close > Today's Open
 
-    See PriceActionStrategy.buyConditionsMet() to see the logic
+See PriceActionStrategy.buyConditionsMet() to see the logic
 
 ## Win Condition
 Essentially, if you hit your profit target, it's a win. If the price goes below risk, it's a loss. If neither, it's a stale 
@@ -32,8 +32,9 @@ The logic is here:
     return "Stale"      
 
 # Program Execution 
-Main method of the program is at index.py
+Main method of the program is at index.py.
 Configure your variable constants: 
+
     ticker = 'CNX'
     watchlist = ['AMZN', 'TSLA', 'GOOG', 'W', 'BDX', 'TDOC', 'CRM', 'ENTG', 'JD', 'PTON', 'TRMB', 'STNE', 'BJ', 'NRG']
     ticker_set = ['PTON', 'FUTU', 'HCAT', 'TSLA', 'TDOC']
@@ -54,8 +55,13 @@ Once your variables are configured, execute python
 # How you should use the program 
 1. Build your watchlist of stocks that appear to meet the criteria and look good
 2. Run your watchlist sort 
+
     init(1)
+
 3. Choose the best ~5 stocks or so. (However many you want to diversify risk)
 4. Optimize the best ~5 stocks to buy for the day 
+
+    init(2)
+
 5. Execute the strategy mentioned above
 
