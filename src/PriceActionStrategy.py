@@ -1,8 +1,23 @@
 #Price Action Long Strategy
 import yfinance as yf
 
+#Simple Moving average formula 
 def simpleMovingAverage(df, length, value):
     return sum(df.iloc[-length:][value]) / length
+
+# Function to sort the list of tuples by its second item 
+def Sort_Tuple(tup):  
+      
+    # getting length of list of tuples 
+    lst = len(tup)  
+    for i in range(0, lst):  
+          
+        for j in range(0, lst-i-1):  
+            if (tup[j][1] > tup[j + 1][1]):  
+                temp = tup[j]  
+                tup[j]= tup[j + 1]  
+                tup[j + 1]= temp  
+    return tup  
 
 #Meets buying conditions
 #For this strategy, the buying condition is when the equity has high volume on a green day.
@@ -10,7 +25,7 @@ def simpleMovingAverage(df, length, value):
 #Today's Close > Yesterday's Close
 #Today's Close > Yesterday's Open
 #Today's Close > Today's Open
-def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_180):
+def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage):
     condition_1 = (todaysEquityData['Volume'] > volumeAverage_50) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'])
     condition_2 = (abs(todaysEquityData['Close'] - todaysEquityData['Open']) > abs(yesterdaysEquityData['Close'] - yesterdaysEquityData['Open']))
     condition_3 = todaysEquityData['Close'] > todaysEquityData['Open']
@@ -44,14 +59,14 @@ def analyzeTrade(ticker, risk, reward, leverage, show_full_logs):
         tomorrowsEquityData = tickerDataFrame.iloc[day + 1]     #High, Low, Open, Close, of a tomorrow
 
         volumeAverage_50 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 50, 'Volume')     #50 Day Volume Average
-        priceAverage_180 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 1, 'Close')       #180 Day SMA
+        priceAverage = 0                                        #Can set this to a SMA value 
 
         todaysDate = tickerDataFrame.index[day]
 
-        if(buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage_180)):
+        if(buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage)):
             result = tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward)
 
-            if(show_full_logs):
+            if(show_full_logs):                                 #Prints the trade date and the result of the trade. Only runs on show_full_logs = True
                 print(todaysDate)
                 print(result)
 
@@ -70,20 +85,11 @@ def analyzeTrade(ticker, risk, reward, leverage, show_full_logs):
 
     return [("Ticker", ticker), ("Wins", wins), ("Losses", losses), ("Stales", stale), ("Win%", win_percent), ("Loss%", loss_percent), ("Stale%", stale_percent), ("ExpVal", expected_value + 1)]
 
-# Function to sort the list of tuples by its second item 
-def Sort_Tuple(tup):  
-      
-    # getting length of list of tuples 
-    lst = len(tup)  
-    for i in range(0, lst):  
-          
-        for j in range(0, lst-i-1):  
-            if (tup[j][1] > tup[j + 1][1]):  
-                temp = tup[j]  
-                tup[j]= tup[j + 1]  
-                tup[j + 1]= temp  
-    return tup  
+#METHODS TO BE EXECUTED BY index.py
+#----------------------------------------
+#----------------------------------------
 
+#Given a ticker, do a deep analysis and return the average expected value, optimal reward point, and highest expected value 
 def optimizeTicker(ticker, risk, reward_risk_ratios, leverage, show_full_logs):
     max_expected_value = 0
     optimal_profit_target = 0
@@ -113,6 +119,7 @@ def optimizeTicker(ticker, risk, reward_risk_ratios, leverage, show_full_logs):
 
     return [average_expected_value, optimal_profit_target, max_expected_value]
 
+#Given a quote of stocks, return the optimal risk reward points and its expected value 
 def optimizeTrades(tickers, risk, reward_risk_ratios, leverage):
     results = []
     for ticker in tickers: 
@@ -132,7 +139,6 @@ def optimizeTrades(tickers, risk, reward_risk_ratios, leverage):
     print('Total Expected Value: {}'.format(total_expected_value / len(tickers)))
     print('Est. Annual Expected Value: {}'.format((total_expected_value / len(tickers)) ** 260))
         
-
 #Given a list of tickers, sort them by average expected value 
 def sortTickersByExpectedValue(tickers, risk, reward_risk_ratios, leverage):
     pairs = []
