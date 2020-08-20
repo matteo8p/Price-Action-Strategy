@@ -26,14 +26,15 @@ def Sort_Tuple(tup):
 #Today's Close > Yesterday's Open
 #Today's Close > Today's Open
 def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage):
-    condition_1 = todaysEquityData['Volume'] >= volumeAverage_50
-    condition_2 = todaysEquityData['Close'] > priceAverage
-    condition_3 = todaysEquityData['Open'] >= yesterdaysEquityData['Close']
-    condition_4 = todaysEquityData['Close'] >= yesterdaysEquityData['Close']
-    condition_5 = todaysEquityData['Open'] > todaysEquityData['Close']
+    condition_1 = todaysEquityData['Volume'] >= yesterdaysEquityData['Volume']
+    condition_2 = todaysEquityData['Volume'] >= volumeAverage_50 
+    condition_3 = todaysEquityData['Close'] > priceAverage
+
+    condition_4 = todaysEquityData['Open'] >= yesterdaysEquityData['Close']
+    condition_5 = todaysEquityData['Close'] > todaysEquityData['Open']
 
 
-    return condition_1 and condition_2 and condition_3 and condition_4
+    return condition_2 and condition_3 and condition_4 and condition_5
 
 #Profit Target = (1 + reward) * Purchase Price
 #Stop Loss = (1 - risk) * Purchase Price
@@ -148,13 +149,13 @@ def sortTickersByExpectedValue(tickers, risk, reward_risk_ratios, leverage):
     pairs = []
     for ticker in tickers: 
         result = optimizeTicker(ticker, risk, reward_risk_ratios, leverage, False)
-        pairs.append([ticker, result[0]])
+        pairs.append([ticker, result[2]])
 
     pairs = Sort_Tuple(pairs)
 
     index = len(pairs)
     for pair in pairs: 
-        print('{}: {} has average expected value of {}'.format(index, pair[0], pair[1]))
+        print('{}: {} has MAX expected value of {}'.format(index, pair[0], pair[1]))
         index -= 1
         print('')
 

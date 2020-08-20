@@ -1,8 +1,8 @@
 import PriceActionStrategy as pas
 
-ticker = 'TRI'
-watchlist = ['JD', 'TOT', 'CEO', 'KDP', 'TRI', 'MCHP', 'IEP', 'MNTA', 'IRTC', 'PLUG', 'WMS', 'KBR', 'EXPI', 'TPTX', 'PGNY', 'APPS', 'SGMO', 'CGEN', 'HOME']
-ticker_set = ['PCRX', 'TDOC', 'YY', 'JD', 'FUTU']
+ticker = 'INMD'
+watchlist = ['YNDX', 'TECK', 'TDOC', 'PLUG', 'OSB', 'ORCL', 'KDP', 'JD', 'EXPI', 'CRSP', 'BLDP']
+ticker_set = ['JD', 'PLUG', 'OSB', 'TECK', 'BLDP', 'INMD']
 
 show_every_trade = False        #used in optimizeTicker(). Set to True to see every trade 
 
