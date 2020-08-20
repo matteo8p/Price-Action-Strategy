@@ -1,13 +1,14 @@
 import PriceActionStrategy as pas
 
-ticker = 'PTON'
-watchlist = ['AMZN', 'TSLA', 'GOOG', 'W', 'BDX', 'TDOC', 'CRM', 'ENTG', 'JD', 'PTON', 'TRMB', 'STNE', 'BJ', 'NRG', 'FUTU', 'HCAT']
-ticker_set = ['PTON', 'FUTU', 'HCAT', 'TSLA', 'TDOC']
+ticker = 'INMD'
+watchlist = ['YNDX', 'TECK', 'TDOC', 'PLUG', 'OSB', 'ORCL', 'KDP', 'JD', 'EXPI', 'CRSP', 'BLDP']
+ticker_set = ['JD', 'PLUG', 'OSB', 'TECK', 'BLDP', 'INMD']
 
 show_every_trade = False        #used in optimizeTicker(). Set to True to see every trade 
 
 risk = 0.01
 reward_risk_ratios = [1, 1.5, 2, 2.5, 3]
+# reward_risk_ratios = [2]
 leverage = 1
 
 #PriceActionStrategy.optimizeTicker() analyzes a single ticker
@@ -26,4 +27,4 @@ def init(run):
     #2. To optimize your risk-reward ratio for the stocks in ticker_set, use this method 
         pas.optimizeTrades(ticker_set, risk, reward_risk_ratios, leverage)
 
-init(0)
+init(2)

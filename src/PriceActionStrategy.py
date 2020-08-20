@@ -26,17 +26,22 @@ def Sort_Tuple(tup):
 #Today's Close > Yesterday's Open
 #Today's Close > Today's Open
 def buyConditionsMet(todaysEquityData, yesterdaysEquityData, volumeAverage_50, priceAverage):
-    condition_1 = (todaysEquityData['Volume'] > volumeAverage_50) and (todaysEquityData['Close'] > yesterdaysEquityData['Close']) and (todaysEquityData['Close'] > yesterdaysEquityData['Open'])
-    condition_2 = (abs(todaysEquityData['Close'] - todaysEquityData['Open']) > abs(yesterdaysEquityData['Close'] - yesterdaysEquityData['Open']))
-    condition_3 = todaysEquityData['Close'] > todaysEquityData['Open']
-    return condition_1 and condition_2 and condition_3
+    condition_1 = todaysEquityData['Volume'] >= yesterdaysEquityData['Volume']
+    condition_2 = todaysEquityData['Volume'] >= volumeAverage_50 
+    condition_3 = todaysEquityData['Close'] > priceAverage
+
+    condition_4 = todaysEquityData['Open'] >= yesterdaysEquityData['Close']
+    condition_5 = todaysEquityData['Close'] > todaysEquityData['Open']
+
+
+    return condition_2 and condition_3 and condition_4 and condition_5
 
 #Profit Target = (1 + reward) * Purchase Price
 #Stop Loss = (1 - risk) * Purchase Price
 def tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward):
     tradePrice = todaysEquityData['Close']
 
-    if(tomorrowsEquityData['Open'] > tradePrice * (1 - risk)) and (tomorrowsEquityData['High'] >= tradePrice * (1 + reward)):
+    if (tomorrowsEquityData['Open'] >= tradePrice * (1 + reward)) or (tomorrowsEquityData['Low'] > tradePrice * (1 - risk) and tomorrowsEquityData['High'] >= tradePrice * (1 + reward)):
         return "Win"
     elif(tomorrowsEquityData['Low'] <= tradePrice * (1 - risk)):
         return "Lose"
@@ -46,7 +51,7 @@ def tradeResult(todaysEquityData, tomorrowsEquityData, risk, reward):
 #Analyze a trade for a given symbol
 def analyzeTrade(ticker, risk, reward, leverage, show_full_logs):
     tickerData = yf.Ticker(ticker)
-    tickerDataFrame = tickerData.history(period='1d', start = '2015-1-1', end='2020-8-16')
+    tickerDataFrame = tickerData.history(period='1d', start = '2018-1-1', end='2020-8-18')
     days = len(tickerDataFrame)
 
     wins = 0                           #How many times the strategy wins
@@ -59,7 +64,7 @@ def analyzeTrade(ticker, risk, reward, leverage, show_full_logs):
         tomorrowsEquityData = tickerDataFrame.iloc[day + 1]     #High, Low, Open, Close, of a tomorrow
 
         volumeAverage_50 = simpleMovingAverage(tickerDataFrame.iloc[0: day], 50, 'Volume')     #50 Day Volume Average
-        priceAverage = 0                                        #Can set this to a SMA value 
+        priceAverage = simpleMovingAverage(tickerDataFrame.iloc[0: day], 50, 'Close')                                       #Can set this to a SMA value 
 
         todaysDate = tickerDataFrame.index[day]
 
@@ -144,13 +149,13 @@ def sortTickersByExpectedValue(tickers, risk, reward_risk_ratios, leverage):
     pairs = []
     for ticker in tickers: 
         result = optimizeTicker(ticker, risk, reward_risk_ratios, leverage, False)
-        pairs.append([ticker, result[0]])
+        pairs.append([ticker, result[2]])
 
     pairs = Sort_Tuple(pairs)
 
     index = len(pairs)
     for pair in pairs: 
-        print('{}: {} has average expected value of {}'.format(index, pair[0], pair[1]))
+        print('{}: {} has MAX expected value of {}'.format(index, pair[0], pair[1]))
         index -= 1
         print('')
 
